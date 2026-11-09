@@ -21,6 +21,7 @@
         "Acme",
         "Beta"
       ],
+      "next_action": "Verify eligibility and current terms on the captured page, then manually use the visible route if appropriate: https://directory.example/submit",
       "own_match_evidence": null,
       "own_presence": "not_observed_in_capture",
       "page_type": "listicle",
@@ -41,6 +42,7 @@
         "Beta": "not_observed_in_capture"
       },
       "competitors_observed": [],
+      "next_action": "Manually verify the observed profile and use the visible claim/update route if appropriate: https://marketplace.example/claim",
       "own_match_evidence": "linked domain: app.myco.co.uk",
       "own_presence": "observed",
       "page_type": "marketplace",
@@ -61,6 +63,7 @@
         "Beta": "unknown"
       },
       "competitors_observed": [],
+      "next_action": "Recapture or inspect manually; no presence conclusion is available.",
       "own_match_evidence": null,
       "own_presence": "unknown",
       "page_type": "unknown",
@@ -71,6 +74,6 @@
       "title": "Top CRM tools"
     }
   ],
-  "run_id": "15bedba17d74",
+  "run_id": "d3472c77e122",
   "schema_version": 1
 }

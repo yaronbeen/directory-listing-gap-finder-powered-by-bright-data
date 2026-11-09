@@ -19,7 +19,7 @@ Build a bounded, cited queue of listing and profile-review opportunities. Presen
 - No Domain Authority, traffic, followed-link, acceptance, or ranking claims.
 - Match whole brand names and user-supplied domains literally, including their subdomains. Do not guess registrable domains or use a homemade public-suffix rule.
 - Page type comes from the page title, not an incidental word anywhere in the body. Common-word brands such as Close, Linear, Copper, Notion, and Zoom require domain evidence; ambiguous text alone remains `unknown`.
-- If Bright Data MCP is unavailable, ask the user to connect it and stop.
+- If Bright Data MCP is unavailable, follow `docs/install-bright-data-mcp.md` or ask the user to connect it; stop until the required tools are visible.
 
 ## Inputs
 
@@ -103,7 +103,7 @@ The mechanical `review` gate requires all four:
 3. Own brand not observed in a complete capture.
 4. At least one safe visible route.
 
-Other rows are `manual_review` or `update_profile`. Review route terms, eligibility, price, and editorial fit manually. Draft factual listing copy only on request and never submit it.
+Other rows are `manual_review` or `update_profile`. Use `action-plan.md` and the CSV `next_action` field to explain the next verification step and visible route. Failed captures must direct the user to recapture or inspect manually, never to an absence claim. Review route terms, eligibility, price, and editorial fit manually. Draft factual listing copy only on request and never submit it.
 
 ## Failure handling
 
@@ -115,4 +115,4 @@ Other rows are `manual_review` or `update_profile`. Review route terms, eligibil
 
 ## Output limits
 
-No auto-submission, paid placement, link-value score, or ranking forecast. Return `report.md`, `opportunities.csv`, and `run.json` paths.
+No auto-submission, paid placement, link-value score, or ranking forecast. Return `report.md`, `opportunities.csv`, `action-plan.md`, and `run.json` paths.

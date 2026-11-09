@@ -2,16 +2,9 @@
 
 ## 1. Connect Bright Data MCP
 
-Create a Bright Data API token in your account. Keep it in your local secret store or environment. Never commit it, paste it into an example, or include it in a report.
+Follow [Install Bright Data MCP](install-bright-data-mcp.md) for the hosted URL, local `npx @brightdata/mcp` configuration, Claude/Cursor setup, OpenCode V2 setup, token handling, and connection checks.
 
-Follow the [official remote MCP quickstart](https://docs.brightdata.com/products/mcp-server/remote/quickstart). The hosted endpoints documented there are:
-
-- SSE: `https://mcp.brightdata.com/sse?token=YOUR_API_TOKEN`
-- Streamable HTTP: `https://mcp.brightdata.com/mcp?token=YOUR_API_TOKEN`
-
-Configure the MCP server under the name `brightdata` in Claude Code or OpenCode. Use the client's secret-safe configuration flow. If the tools are not visible to the agent, stop and fix the connection before collecting data.
-
-Read the [current free-tier terms](https://docs.brightdata.com/general/account/billing-and-pricing/free-tier) for eligibility, resets, included products, and usage accounting. The README's 5,000-credit offer is a starting allowance, not an unlimited-use claim.
+This skill requires `search_engine` and `scrape_as_markdown` under the server name `brightdata`. Keep the token out of examples, reports, Git history, and shared URLs. If the tools are not visible, stop and fix the connection before collecting data. The README's 5,000-credit offer is a shared monthly starting allowance, not an unlimited-use claim.
 
 ## 2. Tools used here
 
@@ -42,7 +35,9 @@ A missing `--previous` means first run. The helper does not search for snapshots
 File: `opportunities.csv`  
 Upsert key: `page_url`
 
-Columns: `page_url`, `page_type`, `own_presence`, `competitors_observed`, `competitor_presence`, `own_match_evidence`, `competitor_match_evidence`, `submission_routes`, `priority`, `status`, `captured_at`.
+Columns: `page_url`, `page_type`, `own_presence`, `competitors_observed`, `competitor_presence`, `own_match_evidence`, `competitor_match_evidence`, `submission_routes`, `priority`, `next_action`, `status`, `captured_at`.
+
+`action-plan.md` turns the same rows into a manual checklist. `next_action` is derived before diff comparison so repeat runs stay unchanged when the evidence is unchanged. Failed captures direct the user to recapture or inspect manually; they never become absence claims or submission tasks.
 
 `competitor_domains` supplies literal domains for ambiguous or common-word brands. Supplied domains and their subdomains count as observed; ambiguous text alone remains `unknown`.
 

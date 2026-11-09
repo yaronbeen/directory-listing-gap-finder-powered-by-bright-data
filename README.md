@@ -16,7 +16,7 @@ Use it to:
 
 ## Why Bright Data
 
-Search results give you places to look. They do not give you a presence matrix. [Bright Data](https://brightdata.com/) MCP connects search and public-page-to-Markdown collection in one agent workflow, so each opportunity can carry page evidence instead of a guessed verdict. That means less copy-paste research and fewer imaginary listing gaps.
+Search results give you places to look. They do not give you a presence matrix. [Bright Data](https://docs.brightdata.com/products/mcp-server/overview) MCP connects search and public-page-to-Markdown collection in one agent workflow, so each opportunity can carry page evidence instead of a guessed verdict. That means less copy-paste research and fewer imaginary listing gaps.
 
 ## Start with 5,000 free credits
 
@@ -27,9 +27,10 @@ The default plan uses **4 searches and 12 public-page fetches**, with at most **
 ## What you get
 
 - `report.md`: a prioritized manual-review queue.
-- `opportunities.csv`: stable `page_url` keys, presence states, competitor matches, and routes.
+- `opportunities.csv`: stable `page_url` keys, presence states, competitor matches, routes, and a concrete `next_action`.
+- `action-plan.md`: a human checklist explaining why each page is queued and what to verify or do next.
 - `run.json`: the current snapshot for detecting page, presence, and route changes; vanished pages are not labeled as removed.
-- Three honest states: `observed`, `not_observed_in_capture`, and `unknown`.
+- Three honest states: `observed`, `not_observed_in_capture`, and `unknown`; failed captures always route to recapture or manual inspection.
 
 ## Give this to your agent
 
@@ -49,16 +50,23 @@ Close, Linear, or Copper; ambiguous text alone stays unknown. Do not derive
 registrable domains or invent authority scores. Classify page type from the title,
 not an incidental word buried in the article. Capture visible http/https submit,
 claim, or editorial routes without opening forms.
-Run scripts/report.py and return the manual-review queue. Do not submit, claim,
-pay, publish, or promise backlink value.
+Run scripts/report.py and return the manual-review queue plus action-plan.md.
+Follow the listed verification steps manually. Do not submit, claim, pay, publish,
+or promise backlink value.
 ```
 
 ## Install
 
-Requires Python 3.10+, an agent with Bright Data MCP connected as `brightdata`, and access to this private repo.
+Requires Python 3.10+ and an MCP-compatible agent. This is a public repo.
+
+### 1. Connect Bright Data MCP
+
+Follow [Install Bright Data MCP](docs/install-bright-data-mcp.md). Choose hosted or local setup, then verify `search_engine` and `scrape_as_markdown` are connected as `brightdata`.
+
+### 2. Clone the skill
 
 ```bash
-git clone git@github.com:yaronbeen/directory-listing-gap-finder-powered-by-bright-data.git \
+git clone https://github.com/yaronbeen/directory-listing-gap-finder-powered-by-bright-data.git \
   ~/.claude/skills/directory-listing-gap-finder
 ```
 
@@ -98,7 +106,7 @@ The first commit defines behavior before implementation.
 python3 -m unittest discover -s tests -v
 ```
 
-Tests cover whole-brand matching, ambiguous common-word brands, supplied domains and subdomains, title-based page types, failed and truncated captures, match evidence, safe routes, priority gates, CSV injection, stable diffs, and a sanitized live listicle. See [the testing note](docs/testing.md).
+Tests cover whole-brand matching, ambiguous common-word brands, supplied domains and subdomains, title-based page types, failed and truncated captures, match evidence, safe routes, priority gates, next-action plans, MCP installation docs, CSV injection, stable diffs, and a sanitized live listicle. See [the testing note](docs/testing.md).
 
 ## What this is not
 

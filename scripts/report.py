@@ -124,6 +124,27 @@ def evaluate_page(page, own_brand, competitors, own_domain=None, competitor_doma
     return result
 
 
+def next_action(row):
+    routes = ", ".join(row["submission_routes"])
+    if row["priority"] == "review":
+        return f"Verify eligibility and current terms on the captured page, then manually use the visible route if appropriate: {routes}"
+    if row["priority"] == "update_profile":
+        return f"Manually verify the observed profile and use the visible claim/update route if appropriate: {routes}"
+    if row["capture_status"] not in {"ok", "complete"}:
+        return "Recapture or inspect manually; no presence conclusion is available."
+    return "Inspect the page manually and locate an official editorial route; no qualifying submission route was captured."
+
+
+def render_action_plan(rows):
+    lines = ["# Manual listing action plan | Powered by Bright Data", "", "This plan never submits a form or claims acceptance, link value, or ranking impact. Re-check the live page and current terms before acting.", ""]
+    if not rows:
+        lines.append("No pages were supplied.")
+    for row in rows:
+        observed = ", ".join(row["competitors_observed"]) or "none observed"
+        lines += [f"## {md(row['priority'])} — {md(row['page_url'])}", "", f"- Evidence: own presence is `{row['own_presence']}`; observed competitors: {md(observed)}; capture status: `{row['capture_status']}`.", f"- Next action: {md(row['next_action'])}", ""]
+    return "\n".join(lines) + "\n"
+
+
 def comparison_value(value):
     if isinstance(value, dict):
         return {k: comparison_value(v) for k, v in value.items() if k not in {"status", "captured_at"}}
@@ -158,12 +179,14 @@ def analyze(payload, previous=None):
     rows = [evaluate_page(p, own, competitors, payload.get("own_domain"), competitor_domains) for p in payload.get("pages", [])]
     old = {r["page_url"]: comparison_value(r) for r in (previous or {}).get("rows", [])}
     for row in rows:
+        row["next_action"] = next_action(row)
         identity = row["page_url"]
         row["status"] = "new" if identity not in old else ("unchanged" if old[identity] == comparison_value(row) else "changed")
     rows.sort(key=lambda r: ({"review": 0, "update_profile": 1, "manual_review": 2}[r["priority"]], r["page_url"] or ""))
     run_id = hashlib.sha256(json.dumps(comparison_value(rows), sort_keys=True).encode()).hexdigest()[:12]
     result = {"rows": rows, "snapshot": {"schema_version": 1, "run_id": run_id, "own_brand": own, "competitors": competitors, "competitor_domains": competitor_domains, "rows": rows}}
     result["report"] = render(result)
+    result["action_plan"] = render_action_plan(rows)
     return result
 
 
@@ -172,10 +195,11 @@ def write_outputs(result, output_dir):
     out.mkdir(parents=True, exist_ok=True)
     (out / "report.md").write_text(result["report"])
     (out / "run.json").write_text(json.dumps(result["snapshot"], indent=2, sort_keys=True) + "\n")
-    fields = ["page_url", "page_type", "own_presence", "competitors_observed", "competitor_presence", "own_match_evidence", "competitor_match_evidence", "submission_routes", "priority", "status", "captured_at"]
+    (out / "action-plan.md").write_text(result["action_plan"])
+    fields = ["page_url", "page_type", "own_presence", "competitors_observed", "competitor_presence", "own_match_evidence", "competitor_match_evidence", "submission_routes", "priority", "next_action", "status", "captured_at"]
     json_fields = {"competitors_observed", "competitor_presence", "competitor_match_evidence", "submission_routes"}
     with (out / "opportunities.csv").open("w", newline="") as handle:
-        writer = csv.DictWriter(handle, fieldnames=fields, extrasaction="ignore")
+        writer = csv.DictWriter(handle, fieldnames=fields, extrasaction="ignore", lineterminator="\n")
         writer.writeheader()
         for row in result["rows"]:
             writer.writerow({key: csv_cell(json.dumps(row[key]) if key in json_fields else row.get(key)) for key in fields})
