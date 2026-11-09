@@ -4,6 +4,19 @@
 
 Find public directories, alternatives pages, marketplaces, and “best X” lists where your competitors appear but your brand was not observed in the captured page. Turn them into a careful manual-review queue with the evidence and visible submission route attached.
 
+## In plain English
+
+**Find “best X” lists and directories where your competitors are listed but you may not be.**
+
+An AI-agent skill. You give your brand and a few competitors. Your agent uses Bright Data MCP to search for directories, alternatives pages and listicles, reads them, and checks who appears on each.
+
+| | |
+|---|---|
+| **You give it** | Your brand and domain, 3-5 competitors, a category and a country. |
+| **You get** | `opportunities.csv` and `action-plan.md`: a prioritized list of pages where competitors appear and you were not seen, with the quoted evidence, the visible submission route and one next action. |
+| **Made for** | SEO and marketing people doing manual listing and citation outreach. |
+| **Boundaries** | It never submits, claims or contacts anyone; “not seen” is never “absent”. |
+
 ## The decision
 
 **Which listing or profile update deserves manual attention first?**
