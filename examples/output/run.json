@@ -11,7 +11,7 @@
       "captured_at": "2026-11-09T12:00:00Z",
       "competitor_match_evidence": {
         "Acme": "brand text: A curated list of CRM tools featuring Acme and Beta.",
-        "Beta": "brand text: ed list of CRM tools featuring Acme and Beta."
+        "Beta": "brand text: curated list of CRM tools featuring Acme and Beta."
       },
       "competitor_presence": {
         "Acme": "observed",
@@ -71,6 +71,6 @@
       "title": "Top CRM tools"
     }
   ],
-  "run_id": "701b8e9f7153",
+  "run_id": "15bedba17d74",
   "schema_version": 1
 }

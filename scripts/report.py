@@ -31,7 +31,10 @@ def find_brand_evidence(text, brand):
     match = re.search(r"(?<![\w])" + re.escape(brand) + r"(?![\w])", text, re.I)
     if not match:
         return None
-    excerpt = text[max(0, match.start() - 40):min(len(text), match.end() + 60)]
+    start = max(0, match.start() - 40)
+    while start > 0 and not text[start - 1].isspace():
+        start -= 1
+    excerpt = text[start:min(len(text), match.end() + 60)]
     return " ".join(excerpt.split())
 
 
