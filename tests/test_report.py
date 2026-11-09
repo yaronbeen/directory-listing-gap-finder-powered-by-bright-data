@@ -1,3 +1,4 @@
+import json
 import sys
 import tempfile
 import unittest
@@ -27,6 +28,10 @@ class DirectoryTests(unittest.TestCase):
         result = evaluate_page({"url": "https://example.com", "capture_status": "failed"}, "MyCo", ["Acme"])
         self.assertEqual(result["own_presence"], "unknown")
         self.assertEqual(result["priority"], "manual_review")
+        truncated = evaluate_page({"url": "https://example.com", "text": "Acme", "capture_status": "truncated"}, "MyCo", ["Acme"])
+        self.assertEqual(truncated["own_presence"], "unknown")
+        exact_domain = evaluate_page({"url": "https://directory.example", "title": "Best CRM", "text": "Tools", "linked_domains": ["app.myco.co.uk"], "capture_status": "ok"}, "MyCo", ["Acme"], "myco.co.uk")
+        self.assertEqual(exact_domain["own_presence"], "observed")
 
     def test_csv_diff_and_outputs(self):
         self.assertEqual(csv_cell("\t=1+1"), "'\t=1+1")
@@ -38,6 +43,11 @@ class DirectoryTests(unittest.TestCase):
             write_outputs(second, tmp)
             self.assertTrue((Path(tmp) / "opportunities.csv").is_file())
             self.assertIn("not_observed_in_capture", (Path(tmp) / "run.json").read_text())
+
+    def test_sanitized_live_capture_page_type(self):
+        fixture = json.loads((Path(__file__).parent / "fixtures" / "sanitized_live.json").read_text())
+        page = fixture["page"]
+        self.assertEqual(classify_page(page["title"], page["text"]), "listicle")
 
 
 if __name__ == "__main__":

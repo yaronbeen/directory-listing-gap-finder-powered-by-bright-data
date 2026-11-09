@@ -1,0 +1,11 @@
+{
+  "example_type": "synthetic",
+  "own_brand": "MyCo",
+  "own_domain": "myco.co.uk",
+  "competitors": ["Acme", "Beta"],
+  "pages": [
+    {"url": "https://directory.example/best-crm", "title": "Best CRM Software", "text": "A curated list of CRM tools featuring Acme and Beta.", "capture_status": "ok", "linked_domains": ["acme.com", "beta.com"], "submission_routes": ["https://directory.example/submit"], "captured_at": "2026-11-09T12:00:00Z"},
+    {"url": "https://marketplace.example/apps/myco", "title": "MyCo marketplace profile", "text": "MyCo marketplace profile with an incomplete description.", "capture_status": "ok", "linked_domains": ["app.myco.co.uk"], "submission_routes": ["https://marketplace.example/claim"], "captured_at": "2026-11-09T12:01:00Z"},
+    {"url": "https://news.example/top-crm", "title": "Top CRM tools", "text": "Acme appears before the capture was cut.", "capture_status": "truncated", "linked_domains": ["acme.com"], "submission_routes": [], "captured_at": "2026-11-09T12:02:00Z"}
+  ]
+}

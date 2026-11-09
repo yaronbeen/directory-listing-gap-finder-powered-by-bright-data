@@ -1,0 +1,66 @@
+{
+  "competitors": [
+    "Acme",
+    "Beta"
+  ],
+  "own_brand": "MyCo",
+  "rows": [
+    {
+      "capture_status": "ok",
+      "captured_at": "2026-11-09T12:00:00Z",
+      "competitor_presence": {
+        "Acme": "observed",
+        "Beta": "observed"
+      },
+      "competitors_observed": [
+        "Acme",
+        "Beta"
+      ],
+      "own_presence": "not_observed_in_capture",
+      "page_type": "listicle",
+      "page_url": "https://directory.example/best-crm",
+      "priority": "review",
+      "status": "new",
+      "submission_routes": [
+        "https://directory.example/submit"
+      ],
+      "title": "Best CRM Software"
+    },
+    {
+      "capture_status": "ok",
+      "captured_at": "2026-11-09T12:01:00Z",
+      "competitor_presence": {
+        "Acme": "not_observed_in_capture",
+        "Beta": "not_observed_in_capture"
+      },
+      "competitors_observed": [],
+      "own_presence": "observed",
+      "page_type": "marketplace",
+      "page_url": "https://marketplace.example/apps/myco",
+      "priority": "update_profile",
+      "status": "new",
+      "submission_routes": [
+        "https://marketplace.example/claim"
+      ],
+      "title": "MyCo marketplace profile"
+    },
+    {
+      "capture_status": "truncated",
+      "captured_at": "2026-11-09T12:02:00Z",
+      "competitor_presence": {
+        "Acme": "unknown",
+        "Beta": "unknown"
+      },
+      "competitors_observed": [],
+      "own_presence": "unknown",
+      "page_type": "unknown",
+      "page_url": "https://news.example/top-crm",
+      "priority": "manual_review",
+      "status": "new",
+      "submission_routes": [],
+      "title": "Top CRM tools"
+    }
+  ],
+  "run_id": "b2fa9c62acf2",
+  "schema_version": 1
+}
