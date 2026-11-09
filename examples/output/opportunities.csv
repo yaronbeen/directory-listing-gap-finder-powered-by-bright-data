@@ -1,4 +1,4 @@
-page_url,page_type,own_presence,competitors_observed,submission_routes,priority,status,captured_at
-https://directory.example/best-crm,listicle,not_observed_in_capture,"[""Acme"", ""Beta""]","[""https://directory.example/submit""]",review,new,2026-11-09T12:00:00Z
-https://marketplace.example/apps/myco,marketplace,observed,[],"[""https://marketplace.example/claim""]",update_profile,new,2026-11-09T12:01:00Z
-https://news.example/top-crm,unknown,unknown,[],[],manual_review,new,2026-11-09T12:02:00Z
+page_url,page_type,own_presence,competitors_observed,competitor_presence,own_match_evidence,competitor_match_evidence,submission_routes,priority,status,captured_at
+https://directory.example/best-crm,listicle,not_observed_in_capture,"[""Acme"", ""Beta""]","{""Acme"": ""observed"", ""Beta"": ""observed""}",,"{""Acme"": ""brand text: A curated list of CRM tools featuring Acme and Beta."", ""Beta"": ""brand text: ed list of CRM tools featuring Acme and Beta.""}","[""https://directory.example/submit""]",review,new,2026-11-09T12:00:00Z
+https://marketplace.example/apps/myco,marketplace,observed,[],"{""Acme"": ""not_observed_in_capture"", ""Beta"": ""not_observed_in_capture""}",linked domain: app.myco.co.uk,{},"[""https://marketplace.example/claim""]",update_profile,new,2026-11-09T12:01:00Z
+https://news.example/top-crm,unknown,unknown,[],"{""Acme"": ""unknown"", ""Beta"": ""unknown""}",,{},[],manual_review,new,2026-11-09T12:02:00Z

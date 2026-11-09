@@ -28,7 +28,7 @@ The default plan uses **4 searches and 12 public-page fetches**, with at most **
 
 - `report.md`: a prioritized manual-review queue.
 - `opportunities.csv`: stable `page_url` keys, presence states, competitor matches, and routes.
-- `run.json`: a snapshot for detecting page, presence, and route changes.
+- `run.json`: the current snapshot for detecting page, presence, and route changes; vanished pages are not labeled as removed.
 - Three honest states: `observed`, `not_observed_in_capture`, and `unknown`.
 
 ## Give this to your agent
@@ -44,8 +44,11 @@ public pages. Show the 16-request plan first. Retry at most twice overall.
 
 Record capture_status=truncated when MCP says content was cut. Treat failed,
 challenged, empty, or truncated captures as unknown. Match whole brand names and
-supplied domains only. Do not derive registrable domains or invent authority scores.
-Capture visible http/https submit, claim, or editorial routes without opening forms.
+supplied domains only. Supply competitor_domains for common-word names such as
+Close, Linear, or Copper; ambiguous text alone stays unknown. Do not derive
+registrable domains or invent authority scores. Classify page type from the title,
+not an incidental word buried in the article. Capture visible http/https submit,
+claim, or editorial routes without opening forms.
 Run scripts/report.py and return the manual-review queue. Do not submit, claim,
 pay, publish, or promise backlink value.
 ```
@@ -79,10 +82,11 @@ The example is synthetic. The [live-check note](docs/live-check.md) records succ
 
 ## Example output
 
-| Priority | Page | Own presence | Competitors observed | Route |
-|---|---|---|---|---|
-| review | directory.example/best-crm | not_observed_in_capture | Acme | `/submit` |
-| manual_review | news.example/top-tools | unknown | unknown | none captured |
+| Priority | Page | Type | Own presence | Competitor presence | Match evidence | Routes | Status |
+|---|---|---|---|---|---|---|---|
+| review | https://directory.example/best-crm | listicle | not_observed_in_capture | Acme: observed; Beta: observed | Acme: brand text: A curated list of CRM tools featuring Acme and Beta.; Beta: brand text: ed list of CRM tools featuring Acme and Beta. | https://directory.example/submit | new |
+| update_profile | https://marketplace.example/apps/myco | marketplace | observed | Acme: not_observed_in_capture; Beta: not_observed_in_capture | Own: linked domain: app.myco.co.uk | https://marketplace.example/claim | new |
+| manual_review | https://news.example/top-crm | unknown | unknown | Acme: unknown; Beta: unknown | none | none captured | new |
 
 A `review` row requires a relevant page type, an observed competitor, an unobserved own brand in a complete capture, and a safe visible route. Everything else stays manual.
 
@@ -94,14 +98,15 @@ The first commit defines behavior before implementation.
 python3 -m unittest discover -s tests -v
 ```
 
-Tests cover whole-brand matching, exact supplied-domain handling, page types, failed and truncated captures, safe routes, priority gates, CSV injection, stable diffs, and a sanitized live listicle. See [the testing note](docs/testing.md).
+Tests cover whole-brand matching, ambiguous common-word brands, supplied domains and subdomains, title-based page types, failed and truncated captures, match evidence, safe routes, priority gates, CSV injection, stable diffs, and a sanitized live listicle. See [the testing note](docs/testing.md).
 
 ## What this is not
 
 - Not a backlink guarantee, domain-authority score, or ranking forecast.
 - Not a sitewide crawler. Presence applies to one captured page only.
 - Not automatic submission. Login, payment, and publishing stay out.
-- Not a Public Suffix List implementation. Your supplied domain is matched exactly, including multi-part suffixes.
+- Not permission to ignore a directory or publisher's current terms. Review them before collection.
+- Not a Public Suffix List implementation. Your supplied domain and its subdomains are matched literally, including multi-part suffixes; no registrable domain is guessed.
 
 ## Repo map
 

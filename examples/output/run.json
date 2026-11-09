@@ -1,4 +1,5 @@
 {
+  "competitor_domains": {},
   "competitors": [
     "Acme",
     "Beta"
@@ -8,6 +9,10 @@
     {
       "capture_status": "ok",
       "captured_at": "2026-11-09T12:00:00Z",
+      "competitor_match_evidence": {
+        "Acme": "brand text: A curated list of CRM tools featuring Acme and Beta.",
+        "Beta": "brand text: ed list of CRM tools featuring Acme and Beta."
+      },
       "competitor_presence": {
         "Acme": "observed",
         "Beta": "observed"
@@ -16,6 +21,7 @@
         "Acme",
         "Beta"
       ],
+      "own_match_evidence": null,
       "own_presence": "not_observed_in_capture",
       "page_type": "listicle",
       "page_url": "https://directory.example/best-crm",
@@ -29,11 +35,13 @@
     {
       "capture_status": "ok",
       "captured_at": "2026-11-09T12:01:00Z",
+      "competitor_match_evidence": {},
       "competitor_presence": {
         "Acme": "not_observed_in_capture",
         "Beta": "not_observed_in_capture"
       },
       "competitors_observed": [],
+      "own_match_evidence": "linked domain: app.myco.co.uk",
       "own_presence": "observed",
       "page_type": "marketplace",
       "page_url": "https://marketplace.example/apps/myco",
@@ -47,11 +55,13 @@
     {
       "capture_status": "truncated",
       "captured_at": "2026-11-09T12:02:00Z",
+      "competitor_match_evidence": {},
       "competitor_presence": {
         "Acme": "unknown",
         "Beta": "unknown"
       },
       "competitors_observed": [],
+      "own_match_evidence": null,
       "own_presence": "unknown",
       "page_type": "unknown",
       "page_url": "https://news.example/top-crm",
@@ -61,6 +71,6 @@
       "title": "Top CRM tools"
     }
   ],
-  "run_id": "b2fa9c62acf2",
+  "run_id": "701b8e9f7153",
   "schema_version": 1
 }

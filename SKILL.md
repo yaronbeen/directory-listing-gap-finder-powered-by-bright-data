@@ -17,7 +17,8 @@ Build a bounded, cited queue of listing and profile-review opportunities. Presen
 - `not_observed_in_capture` never means sitewide absence. Failed, challenged, empty, or truncated captures are `unknown`.
 - Search snippets are discovery leads, not presence evidence.
 - No Domain Authority, traffic, followed-link, acceptance, or ranking claims.
-- Match whole brand names and user-supplied domains exactly. Do not guess registrable domains or use a homemade public-suffix rule.
+- Match whole brand names and user-supplied domains literally, including their subdomains. Do not guess registrable domains or use a homemade public-suffix rule.
+- Page type comes from the page title, not an incidental word anywhere in the body. Common-word brands such as Close, Linear, Copper, Notion, and Zoom require domain evidence; ambiguous text alone remains `unknown`.
 - If Bright Data MCP is unavailable, ask the user to connect it and stop.
 
 ## Inputs
@@ -54,6 +55,7 @@ Create `input.json`:
   "own_brand": "MyCo",
   "own_domain": "myco.co.uk",
   "competitors": ["Acme", "Beta"],
+  "competitor_domains": {"Acme": "acme.com", "Beta": "beta.com"},
   "pages": [
     {
       "url": "https://directory.example/best-crm",
@@ -71,7 +73,8 @@ Create `input.json`:
 - `url`, `text`, `capture_status`, and `captured_at` are required.
 - Keep enough text to support brand matches and page type; do not copy an entire article into the report.
 - Resolve relative submission links to absolute URLs. Include only visible `http` or `https` routes.
-- `linked_domains` contains exact hostnames observed in links. `myco.co.uk` stays `myco.co.uk`; no suffix guessing.
+- `linked_domains` contains exact hostnames observed in links. `myco.co.uk` stays `myco.co.uk`; no suffix guessing. A supplied domain and its subdomains count as observed.
+- `competitor_domains` maps competitor names to supplied domains. It is especially important for common-word names; without it, ambiguous text matches remain `unknown` and cannot trigger `review`.
 - Allowed capture statuses: `ok`, `complete`, `truncated`, `failed`, `challenge`, `empty`.
 
 ### 4. Run the helper
