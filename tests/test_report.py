@@ -81,6 +81,29 @@ class DirectoryTests(unittest.TestCase):
         self.assertEqual(classify_page(page["title"], page["text"]), "listicle")
 
 
+    def test_review_queue_includes_a_manual_action_plan(self):
+        page = {"url": "https://directory.example/best-crm", "title": "Best CRM Software", "text": "Acme is listed here.", "submission_routes": ["https://directory.example/submit"], "capture_status": "ok"}
+        result = analyze({"own_brand": "MyCo", "competitors": ["Acme"], "pages": [page]})
+        self.assertIn("https://directory.example/submit", result["rows"][0]["next_action"])
+        self.assertIn("Verify eligibility and current terms", result["rows"][0]["next_action"])
+        self.assertIn("Acme", result["action_plan"])
+        failed = analyze({"own_brand": "MyCo", "competitors": ["Acme"], "pages": [{"url": "https://example.com", "capture_status": "failed"}]})
+        self.assertIn("Recapture or inspect manually", failed["rows"][0]["next_action"])
+        with tempfile.TemporaryDirectory() as tmp:
+            write_outputs(result, tmp)
+            self.assertTrue((Path(tmp) / "action-plan.md").is_file())
+
+    def test_bright_data_mcp_installation_is_documented(self):
+        root = Path(__file__).parents[1]
+        readme = (root / "README.md").read_text()
+        guide = (root / "docs" / "install-bright-data-mcp.md").read_text()
+        self.assertNotIn("private repo", readme.lower())
+        self.assertIn("docs/install-bright-data-mcp.md", readme)
+        self.assertIn("@brightdata/mcp", guide)
+        self.assertIn("https://mcp.brightdata.com/mcp?token=", guide)
+        self.assertIn("search_engine,scrape_as_markdown", guide)
+        self.assertIn("{env:BRIGHT_DATA_API_TOKEN}", guide)
+
     def test_shipped_example_output_and_readme_table_are_current(self):
         root = Path(__file__).parents[1]
         result = analyze(json.loads((root / "examples" / "input.json").read_text()))
