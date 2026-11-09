@@ -5,7 +5,7 @@ import unittest
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parents[1] / "scripts"))
-from report import analyze, canonical_domain, classify_page, csv_cell, evaluate_page, match_brand, write_outputs
+from report import analyze, canonical_domain, classify_page, csv_cell, evaluate_page, find_brand_evidence, match_brand, write_outputs
 
 
 class DirectoryTests(unittest.TestCase):
@@ -46,6 +46,12 @@ class DirectoryTests(unittest.TestCase):
         self.assertIn("close.com", resolved["competitor_match_evidence"]["Close"])
         own_ambiguous = evaluate_page(page, "Linear", ["Acme"])
         self.assertEqual(own_ambiguous["own_presence"], "unknown")
+
+    def test_match_evidence_does_not_start_mid_word(self):
+        evidence = find_brand_evidence("A curated list of CRM tools featuring Acme and Beta.", "Beta")
+        self.assertFalse(evidence.startswith("ed list"))
+        self.assertTrue(evidence.startswith("curated list"))
+        self.assertIn("Beta", evidence)
 
     def test_match_evidence_and_route_are_emitted(self):
         page = {"url": "https://directory.example/best-crm", "title": "Best CRM Software", "text": "Acme is listed here.", "submission_routes": ["https://directory.example/submit"], "capture_status": "ok"}
